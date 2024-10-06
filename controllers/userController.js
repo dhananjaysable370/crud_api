@@ -42,6 +42,19 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getOneUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findOne({ _id: id });
+        if (!user) {
+            return res.status(401).json({ message: "User not found!" })
+        }
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 const updateUser = async (req, res) => {
     const { id } = req.params;  // Get the user ID from the request params
     const { name, email, password } = req.body;  // Get the updated fields
@@ -87,5 +100,6 @@ module.exports = {
     createUser,
     getAllUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    getOneUser
 };
